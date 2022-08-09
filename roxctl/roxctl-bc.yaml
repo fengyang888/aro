@@ -1,0 +1,28 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  labels:
+    build: roxctl
+  name: roxctl
+  namespace: fydev
+spec:
+  output:
+    to:
+      kind: ImageStreamTag
+      name: roxctl:latest
+  postCommit: {}
+  resources: {}
+  runPolicy: Serial
+  source:
+    contextDir: day2projects/roxctl
+    git:
+      uri: https://accapplications@dev.azure.com/accapplications/PlatformServices/_git/aro#IST-13279
+    sourceSecret:
+      name: accado
+    type: Git
+  strategy:
+    dockerStrategy:
+      from:
+        kind: ImageStreamTag
+        name: ubi8:8.0
+    type: Docker
