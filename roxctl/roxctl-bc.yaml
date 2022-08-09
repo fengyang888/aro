@@ -14,11 +14,9 @@ spec:
   resources: {}
   runPolicy: Serial
   source:
-    contextDir: day2projects/roxctl
+    contextDir: roxctl
     git:
-      uri: https://accapplications@dev.azure.com/accapplications/PlatformServices/_git/aro#IST-13279
-    sourceSecret:
-      name: accado
+      uri: https://github.com/fengyang888/aro.git#main
     type: Git
   strategy:
     dockerStrategy:
