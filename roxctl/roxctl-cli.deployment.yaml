@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: roxctl-cli
+    app.kubernetes.io/component: roxctl-cli
+    app.kubernetes.io/instance: roxctl-cli
+  name: roxctl-cli
+  namespace: day2ops
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      deployment: roxctl-cli
+  template:
+    metadata:
+      labels:
+        deployment: roxctl-cli
+    spec:
+      volumes:
+      - name: backup-volume
+        persistentVolumeClaim:
+          claimName: rhacs-bkp-afs
+      - name: config-volume
+        configMap:
+          name: rhacs-config
+      containers:
+      - image: image-registry.openshift-image-registry.svc:5000/day2ops/roxctl-cli:latest
+        imagePullPolicy: IfNotPresent
+        name: roxctl-cli
+        volumeMounts:
+        - name: config-volume
+          mountPath: /rhacs-config
+        - name: backup-volume
+          mountPath: /backup
+      restartPolicy: Always

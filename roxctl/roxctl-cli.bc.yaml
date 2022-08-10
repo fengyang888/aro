@@ -2,25 +2,23 @@ apiVersion: build.openshift.io/v1
 kind: BuildConfig
 metadata:
   labels:
-    build: roxctl
-  name: roxctl
-  namespace: fydev
+    build: roxctl-cli
+  name: roxctl-cli
+  namespace: day2ops
 spec:
   output:
     to:
-      kind: ImageStreamTag
-      name: roxctl:latest
+      kind: DockerImage
+      name: image-registry.openshift-image-registry.svc:5000/day2ops/roxctl-cli:latest
   postCommit: {}
   resources: {}
   runPolicy: Serial
   source:
     contextDir: roxctl
     git:
-      uri: https://github.com/fengyang888/aro.git#main
+      uri: https://github.com/fengyang888/aro.git
+      ref: main
     type: Git
   strategy:
     dockerStrategy:
-      from:
-        kind: ImageStreamTag
-        name: ubi8:8.0
     type: Docker
