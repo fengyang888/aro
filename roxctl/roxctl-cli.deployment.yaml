@@ -25,7 +25,7 @@ spec:
         configMap:
           name: rhacs-config
       containers:
-      - image: image-registry.openshift-image-registry.svc:5000/day2ops/roxctl-cli:latest
+      - image: registry.redhat.io/advanced-cluster-security/rhacs-roxctl-rhel8:3.70.0
         imagePullPolicy: IfNotPresent
         name: roxctl-cli
         volumeMounts:
@@ -33,4 +33,12 @@ spec:
           mountPath: /rhacs-config
         - name: backup-volume
           mountPath: /backup
+        command:
+        - /bin/bash
+        - -c
+        - |
+          #!/usr/bin/env bash
+          echo "To restore RHACS central database, run \"ls -l /backup\" to list available online backups, then run below command:"
+          echo "roxctl --ca /rhacs-config/rhacs_ca_crt --token-file /rhacs-config/rhacs_api_token -e \$(cat /rhacs-config/rhacs_endpoint) central db restore /backup/<backup-file-name>"
+          while true; do sleep 30; done;  
       restartPolicy: Always
